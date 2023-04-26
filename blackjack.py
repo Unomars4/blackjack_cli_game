@@ -109,7 +109,7 @@ def getHandValue(cards):
             value += int(rank)
 
     value += nofAces
-    for i in range(len(nofAces)):
+    for i in range(nofAces):
         if value + 10 > 21:
             break
         else:
