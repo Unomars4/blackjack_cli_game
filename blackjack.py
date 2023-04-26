@@ -38,6 +38,16 @@ The dealer stops hitting at 17.""")
         deck = getDeck()
         dealerhand = [deck.pop(),deck.pop()]
         playerhand = [deck.pop(),deck.pop()]
+
+        print(f"Bet: ${bet}")
+        while True:
+            
+            displayHands(playerhand, dealerhand, False)
+            if getHandValue(playerhand) > 21:
+                break
+
+            move = getMove(playerhand, money)
+
     
     
     print("Thanks for playing")
@@ -69,6 +79,46 @@ def getDeck():
     random.shuffle(deck)
     return deck
 
+def getMove(cards, money):
+    return
+
+def displayHands(playerhand, dealerhand, showdealerhand):
+    
+    if showdealerhand:
+        print(f"Dealer: ${getHandValue(dealerhand)}")
+        displayCards(dealerhand)
+    else:
+        print("Dealer: ???")
+        displayCards([BACKSIDE] + dealerhand[1:])
+
+    print(f"Player: ${getHandValue(playerhand)}")
+    displayCards(playerhand)
+
+
+def getHandValue(cards):
+    value = 0
+    nofAces = 0
+    
+    for card in cards:
+        rank = card[0]
+        if rank == "A":
+            nofAces += 1
+        elif rank in ["K", "Q", "J"]:
+            value += 10
+        else:
+            value += int(rank)
+
+    value += nofAces
+    for i in range(len(nofAces)):
+        if value + 10 > 21:
+            break
+        else:
+            value += 10
+
+    return value
+
+def displayCards(cards):
+    return
 
 if __name__ == "__main__":
     main()
