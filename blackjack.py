@@ -117,8 +117,22 @@ def getHandValue(cards):
 
     return value
 
+
 def displayCards(cards):
-    return
+    rows = ["", "", "", "", ""]
+    for row in rows:
+        row[0] = "_____"
+        if row == BACKSIDE:
+            row[1] = "|## |"
+            row[2] = "|###|"
+            row[3] = "|__#|"
+        else:
+            row[1] = f"|${cards[0].ljust(2)}|"
+            row[2] = f"|${cards[1].center(2)}|"
+            row[3] = f"|__{cards[0]}|"
+
+    for row in rows:
+        print(row)
 
 if __name__ == "__main__":
     main()
