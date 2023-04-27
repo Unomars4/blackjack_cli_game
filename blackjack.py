@@ -132,7 +132,7 @@ def getMove(cards, money):
         if len(cards) == 2 and money > 0:
             moves.append("(D)ouble down")
         
-        move = input(f"{', '.join(moves)}> ")[0].upper()
+        move = input(f"{', '.join(moves)}> ").upper()
 
         if move in ["H", "D", "S"]:
             return move
@@ -175,22 +175,20 @@ def getHandValue(cards):
 
 
 def displayCards(cards):
-    rows = ["", "", "", ""]
+    rows = ["", "", "", "", ""]
     for card in cards:
-        for row in rows:
-            rows[0] = "_____"
-            if card == BACKSIDE:
-                rows[1] = "|## |"
-                rows[2] = "|###|"
-                rows[3] = "|__#|"
-            else:
-                rows[1] = f"|{str(card[0]).ljust(3)}|"
-                rows[2] = f"|{card[1].center(3)}|"
-                rows[3] = f"|__{str(card[0])}|"
-
-        for row in rows:
-            print(row)
-        print(end="")
+        rows[0] += "_____"
+        if card == BACKSIDE:
+            rows[1] += "|## |"
+            rows[2] += "|###|"
+            rows[3] += "|__#|"
+        else:
+            rows[1] += f"|{str(card[0]).ljust(3)}|"
+            rows[2] += f"|{card[1].center(3)}|"
+            rows[3] += f"|__{str(card[0])}|"
+            
+    for row in rows:
+        print(row)
 
 
 if __name__ == "__main__":
