@@ -48,7 +48,52 @@ The dealer stops hitting at 17.""")
 
             move = getMove(playerhand, money)
 
-    
+            if move == "D":
+                bet += getBet(bet)
+                print(f"Bet increased to ${bet}")
+
+            if move in ["H", "D"]:
+                newCard = deck.pop()
+                print(f"You drew a {newCard[0]} of {newCard[1]}")
+                playerhand.append(newCard)
+                if getHandValue(playerhand) > 21:
+                    continue
+
+            if move in ["S", "D"]:
+                break
+
+        if getHandValue(playerhand) <= 21:
+            while getHandValue(dealerhand) < 17:
+                card = deck.pop()
+                dealerhand.append(card)
+                displayHands(playerhand,dealerhand,False)
+                if getHandValue(dealerhand) > 21:
+                    break
+                print("\n\n")
+        
+        input("Press Enter to continue...")
+
+        displayHands(playerhand, dealerhand, True)
+
+        playervalue = getHandValue(playerhand)
+        dealervalue = getHandValue(dealerhand)
+
+        if dealervalue > 21:
+            print(f"You win, ${bet}")
+            money += bet
+        elif playervalue > 21 or playervalue < dealervalue:
+            print("You lose!")
+            money -= bet
+        elif playervalue > dealervalue:
+            print(f"You win! ${bet}")
+            money += bet
+        elif playervalue == dealervalue:
+            print("It's a tie!")
+
+        input("Press Enter to continue...")
+        print("\n\n")
+
+
     
     print("Thanks for playing")
 
@@ -80,18 +125,29 @@ def getDeck():
     return deck
 
 def getMove(cards, money):
-    return
+    
+    while True:
+        moves = ["(H)it", "(S)tand down"]
+        
+        if len(cards) == 2 and money > 0:
+            moves.append("(D)ouble down")
+        
+        move = input(f"{', '.join(moves)}> ")[0].upper()
+
+        if move in ["H", "D", "S"]:
+            return move
+
 
 def displayHands(playerhand, dealerhand, showdealerhand):
     
     if showdealerhand:
-        print(f"Dealer: ${getHandValue(dealerhand)}")
+        print(f"Dealer: {getHandValue(dealerhand)}")
         displayCards(dealerhand)
     else:
         print("Dealer: ???")
         displayCards([BACKSIDE] + dealerhand[1:])
 
-    print(f"Player: ${getHandValue(playerhand)}")
+    print(f"Player: {getHandValue(playerhand)}")
     displayCards(playerhand)
 
 
@@ -119,20 +175,23 @@ def getHandValue(cards):
 
 
 def displayCards(cards):
-    rows = ["", "", "", "", ""]
-    for row in rows:
-        row[0] = "_____"
-        if row == BACKSIDE:
-            row[1] = "|## |"
-            row[2] = "|###|"
-            row[3] = "|__#|"
-        else:
-            row[1] = f"|${cards[0].ljust(2)}|"
-            row[2] = f"|${cards[1].center(2)}|"
-            row[3] = f"|__{cards[0]}|"
+    rows = ["", "", "", ""]
+    for card in cards:
+        for row in rows:
+            rows[0] = "_____"
+            if card == BACKSIDE:
+                rows[1] = "|## |"
+                rows[2] = "|###|"
+                rows[3] = "|__#|"
+            else:
+                rows[1] = f"|{str(card[0]).ljust(3)}|"
+                rows[2] = f"|{card[1].center(3)}|"
+                rows[3] = f"|__{str(card[0])}|"
 
-    for row in rows:
-        print(row)
+        for row in rows:
+            print(row)
+        print(end="")
+
 
 if __name__ == "__main__":
     main()
